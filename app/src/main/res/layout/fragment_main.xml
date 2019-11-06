@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/grop"
+    android:layout_height="match_parent"
+    tools:context=".Fragment_Main">
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="247dp"></ListView>
+
+    <TextView
+        android:id="@+id/txtstatus"
+        android:layout_width="395dp"
+        android:layout_height="71dp"
+        android:text="@string/status">
+    </TextView>
+
+    <ProgressBar
+        android:id="@+id/prog"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

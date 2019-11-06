@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Mobibank</string>
+    <string name="head">MOBILE BANK TOOLKIT</string>
+    <string name="bal">Check balance</string>
+    <string name="wdaw">Withdraw money</string>
+    <string name="send">Send money</string>
+    <string name="status">Bank Status</string>
+
+    <string-array name="buttons">
+        <item name="balance">Check balance</item>
+        <item name="withdraw">Withdraw money</item>
+        <item name="send">Send money</item>
+    </string-array>
+
+    <string-array name="withdrawal">
+        <item name="Agent Withdrawal">Check balance</item>
+        <item name="ATM withdrawal">Withdraw money</item>
+        <item name="Banch Widthrawal">Send money</item>
+    </string-array>
+
+    <string name="title_hub">Mobibank Toolkit</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_map">Map</string>
+</resources>
