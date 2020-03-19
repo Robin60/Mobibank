@@ -7,6 +7,7 @@
     <color name="prey">#E6DABB</color>
     <color name="l_blue">#A3AFCE</color>
     <color name="l_green">#6FDAC2</color>
-    <color name="l_orange">#E9CF8B</color>
+    <color name="yellow">#FFEB3B</color>
     <color name="dark">#4E4E43</color>
+    <color name="l_orange">#F3DA91</color>
 </resources>

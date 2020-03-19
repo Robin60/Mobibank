@@ -2,19 +2,20 @@ package com.devpoint.realpros.mobibank;
 
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,33 +33,33 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Home_fragment extends Fragment {
     private static Home_fragment instance = null;
-    OnAccount onAccount=new OnAccount();
-    onLoginClick onLoginClick;
+    Home_fragment.onButtonClick onButtonClick;
     private String finalpin="null";
     private TextView title,progview;
+    IntentFilter intentFilter;
     private ProgressBar progressBar;
+    private Button readT;
     private EditText accnumber, accid, accpin;
     private Button login;
+    private CheckBox check;
     private int count=1;
     public Home_fragment() {
-    }
-
-    public static Home_fragment getInstance() {
-        return instance;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.home_fragment, container, false);
+        readT=view.findViewById(R.id.bterms);
         progressBar=view.findViewById(R.id.progressBar);
-        title=view.findViewById(R.id.tittle);
         progview=view.findViewById(R.id.pview);
+        progressBar.setVisibility(View.INVISIBLE);
+        title=view.findViewById(R.id.tittle);
+        check=view.findViewById(R.id.checkT);
         title.setText("WELCOME TO INTERNET BANKING \n LOGIN TO MOBIBANK");
         title.setTextColor(Color.rgb(100,020,255));
         login= view.findViewById(R.id.btnlog);
@@ -66,21 +67,45 @@ public class Home_fragment extends Fragment {
         accid= view.findViewById(R.id.edtid);
         accpin= view.findViewById(R.id.edtpin);
         accid.requestFocus();
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(check.isChecked()){
+                    /*progressBar.setVisibility(View.VISIBLE);
+                    progressBar.setMax(20);
+                    progview.setText("Progress...");
+                    fetchPin(view);*/
+                    String Anumber = accnumber.getText().toString();
+                    String Aid = accid.getText().toString();
+                    getPin(Anumber,Aid);
+
+                }
+            }
+        });
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
              login();
             }
         });
+        readT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              onButtonClick.onRead();
+                accnumber.setText("");
+                accid.setText("");
+                accpin.setText("");
+                check.setChecked(false);
+            }
+        });
         return view;
-
     }
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
         Activity activity=(Activity)context;
         try{
-            onLoginClick=(onLoginClick) activity;
+            onButtonClick =(Home_fragment.onButtonClick) activity;
         }
         catch (ClassCastException e){
             Toast.makeText(getActivity(),"Casting error detected"+e.getMessage(),Toast.LENGTH_LONG).show();
@@ -91,24 +116,29 @@ public class Home_fragment extends Fragment {
         super.onDetach();
     }
     public  void login() {
-        String Anumber = accnumber.getText().toString();
-        String Aid = accid.getText().toString();
-        String Pin = accpin.getText().toString().trim();
-        String encrypPin = getPin(Anumber,Aid);
-        String Apin = String.valueOf(encrypPin);
-        if (Apin.contains("==")) {
-            String rawPin = StringEn.decrypt(Apin);
-            if (Pin.equals(rawPin)) {
-                onLoginClick.onLogin(Anumber, Aid, Apin);
-                accnumber.setText("");
-                accid.setText("");
-                accpin.setText("");
+        if(!(check.isChecked())){
+            Toast.makeText(getActivity(),"You must accept terms to proceed",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            String Anumber = accnumber.getText().toString();
+            String Aid = accid.getText().toString();
+            String Pin = accpin.getText().toString().trim();
+            String encrypPin= getPin(Anumber,Aid);
+            String Apin = String.valueOf(encrypPin);
+            if (Apin.contains("==")) {
+                String rawPin = StringEn.decrypt(Apin);
+                if (Pin.equals(rawPin)) {
+                    onButtonClick.onLogin(Anumber, Aid, Apin);
+                    accnumber.setText("");
+                    accid.setText("");
+                    accpin.setText("");
+                    check.setChecked(false);
+                } else {
+                    Toast.makeText(getActivity(), "Login failed", Toast.LENGTH_LONG).show();
+                }
             } else {
-                Toast.makeText(getActivity(), "Login failed", Toast.LENGTH_LONG).show();
-
+                Toast.makeText(getActivity(), finalpin, Toast.LENGTH_LONG).show();
             }
-        } else {
-            Toast.makeText(getActivity(), finalpin, Toast.LENGTH_LONG).show();
         }
     }
     @Override
@@ -118,6 +148,7 @@ public class Home_fragment extends Fragment {
     }
 
     public String getPin(final String accno,final String accid) {
+        progressBar.setVisibility(View.VISIBLE);
         class GetAccount extends AsyncTask<Integer, Integer, String> {
             @Override
             protected String doInBackground(Integer... params) {
@@ -171,7 +202,7 @@ public class Home_fragment extends Fragment {
 
             @Override
             protected void onPreExecute() {
-                progressBar.setMax(10);
+                progressBar.setMax(20);
                 progview.setText("Progress...");
             }
 
@@ -187,8 +218,50 @@ public class Home_fragment extends Fragment {
         return finalpin;
     }
 
-    public interface onLoginClick{
+    public interface onButtonClick {
         void onLogin(String Ano,String Aid,String Pin);
+        void onRead();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("Fetching pin");
+        getActivity().registerReceiver(intentReceiver, intentFilter);
+
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(intentReceiver);
+    }
+
+    private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String returns;
+            if(intent.getAction().equals("Fetching pin")){
+                String pin=intent.getStringExtra("result");
+                finalpin=pin;
+                if(pin.contains("==")){
+                    returns="fetching data complete";
+                    stopFetching();
+                }
+                else{
+                    returns="fetching returns fail";
+                }
+                progview.setText(returns);
+
+            }
+        }
+    };
+    public void stopFetching(){
+        Intent intent=new Intent(getActivity(),OnlineDbListener1.class);
+        getActivity().stopService(intent);
+        progressBar.setVisibility(View.GONE);
     }
 
 }

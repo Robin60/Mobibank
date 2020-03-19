@@ -37,7 +37,7 @@
         android:id="@+id/edtaccno"
         android:layout_width="155dp"
         android:layout_height="45dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:hint="Enter Account number"
@@ -61,11 +61,11 @@
         android:id="@+id/btnlog"
         android:layout_width="155dp"
         android:layout_height="45dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="60dp"
         android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtpin" />
+        app:layout_constraintTop_toBottomOf="@+id/bterms" />
 
     <EditText
         android:id="@+id/edtid"
@@ -97,7 +97,7 @@
         android:layout_width="135dp"
         android:layout_height="45dp"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="29dp"
         android:text="Account Number"
         app:layout_constraintEnd_toStartOf="@+id/edtaccno"
@@ -127,6 +127,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="16dp" />
+
+    <CheckBox
+        android:id="@+id/checkT"
+        android:layout_width="34dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/bterms"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtpin" />
+
+    <Button
+        android:id="@+id/bterms"
+        android:layout_width="258dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="32dp"
+        android:background="@color/prey"
+        android:textColor="@color/yellow"
+        android:text="Accept terms and agreements"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/edtpin" />
+
 
 
 </android.support.constraint.ConstraintLayout>

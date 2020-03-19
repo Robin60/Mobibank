@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 public class ToSend extends Fragment {
     private String Accpin, Accno;
-    private String txtamount;
     int Accbal=0-1;
     OnAccount onAccount = new OnAccount();
     private TextView txtacc;

@@ -33,7 +33,7 @@ public class SendActivity extends AppCompatActivity implements ToSend.onAccValid
         bundle.putString("Account_pin",pin);
         sendMoney.setArguments(bundle);
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction().replace(R.id.fragment_send, sendMoney,null);
-        ft.addToBackStack(null);
+        ft.isAddToBackStackAllowed();
         ft.commit();
     }
 }

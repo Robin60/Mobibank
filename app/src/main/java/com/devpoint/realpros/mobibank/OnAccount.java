@@ -1,6 +1,5 @@
 package com.devpoint.realpros.mobibank;
 import android.os.AsyncTask;
-import android.util.Log;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -19,53 +18,7 @@ import java.util.Random;
 
 public class OnAccount {
     private String finalbal,accname,finalbal_to;
-    private String finalpin;
     private String server_res="";
-    public void onAccountUpdate(){
-        class OnUpdate extends AsyncTask<Void,Void,String>{
-            @Override
-            protected String doInBackground(Void... voids) {
-                try {
-                    HttpClient client = new DefaultHttpClient();
-                    HttpPost post = new HttpPost("http://192.168.0.19/restApi/update_account.php");
-                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                    nameValuePairs.add(new BasicNameValuePair("Anumber", "183063339"));
-                    nameValuePairs.add(new BasicNameValuePair("Abalance", "2961"));
-
-                    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8);
-                    post.setEntity(entity);
-                    HttpResponse response = client.execute(post);
-                    StatusLine statusLine = response.getStatusLine();
-                    if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        response.getEntity().writeTo(out);
-                        out.close();
-                        String res = out.toString();
-                        if(res=="Success") {
-                            server_res=res;
-                        }
-                        else{
-                            server_res=res;
-                        }
-                    }
-                    else {
-                        server_res="Catastropic error";
-                    }
-
-                } catch (Exception e) {
-                    server_res="Error updating account server";
-                }
-                Log.d("Devp",server_res);
-                return server_res;
-            }
-            @Override
-            protected void onPostExecute(String data) {
-                super.onPostExecute(data);
-            }
-        }
-        OnUpdate onUpdate=new OnUpdate();
-        onUpdate.execute();
-    }
 
     public String onAccountUpdate(final String accno, final int accbal) {
         class OnUpdate extends AsyncTask<Void,Void,String> {

@@ -33,7 +33,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class Main extends AppCompatActivity implements Home_fragment.onLoginClick,Fragment_Main.onListSelectedListener, ToWdaw.onAccountSentListener, WdawMoney.onAccountUpdateListener {
+public class Main extends AppCompatActivity implements Home_fragment.onButtonClick,Fragment_Main.onListSelectedListener,
+        ToWdaw.onAccountSentListener, WdawMoney.onAccountUpdateListener {
    private String server_res;
    ListView listView;
     @Override
@@ -90,19 +91,6 @@ public class Main extends AppCompatActivity implements Home_fragment.onLoginClic
         ft.commit();
     }
 
-  /*  @Override
-    public void onSend(String accno,String accpin,int accbal) {
-        ToSend frag_send=new ToSend();
-        Bundle bundle=new Bundle();
-        bundle.putString("Account_number",accno);
-        bundle.putString("Account_pin",accpin);
-        bundle.putInt("Account_bal",accbal);
-        frag_send.setArguments(bundle);
-        FragmentTransaction ft=getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,frag_send,null);
-        ft.addToBackStack(null);
-        ft.commit();
-
-    }*/
     @Override
     public String onAccountUpdate(final String accno,final int accbal) {
         class OnUpdate extends AsyncTask<Void,Void,String> {
@@ -248,7 +236,13 @@ public class Main extends AppCompatActivity implements Home_fragment.onLoginClic
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},0);
         }
     }
-
+    @Override
+    public void onRead(){
+        Terms_A terms_a=new Terms_A();
+        FragmentTransaction ft=getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,terms_a,null);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
   /*  @Override
     public void onRequestPermissionResult(int requestcode, @Nullable String[]permission,int []requescode){
         super.onRequestPermissionsResult(requestcode,permission,requescode);

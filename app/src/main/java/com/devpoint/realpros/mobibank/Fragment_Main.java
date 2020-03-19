@@ -48,7 +48,6 @@ public class Fragment_Main extends ListFragment implements AdapterView.OnItemCli
     private String Aid;
     private String Apin;
     private int Abal;
-    private  ProgressBar prog;
     private TextView status;
     private OnAccount onAccount=new OnAccount();
 
@@ -72,8 +71,8 @@ public class Fragment_Main extends ListFragment implements AdapterView.OnItemCli
         }
         accountBal();
        View view= inflater.inflate(R.layout.fragment_main, container, false);
-       prog=view.findViewById(R.id.prog);
-       prog.setProgress(3);
+       //prog=view.findViewById(R.id.prog);
+      // prog.setProgress(3);
        status=view.findViewById(R.id.txtstatus);
 
        return  view;
